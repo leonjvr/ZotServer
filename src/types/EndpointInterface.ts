@@ -1,7 +1,12 @@
-export default interface EndpointInterface {
-    supportedMethods: string[];
-    supportedDataTypes: string[];
-    permitBookmarklet: boolean;
+import EndpointInterface from '../types/EndpointInterface';
 
-    init(request: any): Promise<any[]>;
+export default class ListCollections implements EndpointInterface {
+    supportedMethods = ['GET'];
+    supportedDataTypes = ['application/json'];
+    permitBookmarklet = false;
+
+    public async init(request: any) {
+        const collections = await Zotero.Collections.getAll();
+        return [200, 'application/json', JSON.stringify(collections)];
+    }
 }
